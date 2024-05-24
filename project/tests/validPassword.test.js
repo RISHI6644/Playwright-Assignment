@@ -1,12 +1,14 @@
 const { test, expect } = require('@playwright/test');
 const FormSteps = require('../steps/formSteps');
 const logger = require('../../logger');
+const testData = require('../testData/testData.json'); // Load test data
 
 test('Valid password', async ({ page }) => {
     const formSteps = new FormSteps(page);
+    logger.info('Starting validPassword test');
 
     // Navigate to the main page
-    await formSteps.navigateToMainPage('https://userinyerface.com/');
+    await formSteps.navigateToMainPage(testData.url);
     logger.info('Navigated to main page');
 
     // Check if the main page is open by verifying the 'HERE' link is available
@@ -44,7 +46,7 @@ test('Valid password', async ({ page }) => {
     logger.info(`Filled domain field with: ${randomDomain}`);
 
     // Interact with the dropdown list
-    await formSteps.interactWithDropdownList(); // This will click the dropdown and select a random domain
+    await formSteps.interactWithDropdownList();
     logger.info('Interacted with dropdown list and selected a random domain');
 
     // Click on the password field and clear it

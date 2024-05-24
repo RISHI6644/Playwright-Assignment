@@ -7,6 +7,7 @@ test('Help form', async ({ page }) => {
     const formSteps = new FormSteps(page);
     logger.info('Starting Help form test');
 
+    // Navigate to the main page
     await formSteps.navigateToMainPage(testData.url);
     logger.info('Navigated to main page');
 
@@ -18,7 +19,7 @@ test('Help form', async ({ page }) => {
     await formSteps.clickHereLink();
     logger.info('Clicked on "Here" link');
 
-    // Verify that the game page is open by checking the visibility of the "Cancel" button
+    // Verify that the game page is open by checking the visibility of the "Next" button
     const isGamePageOpen = await formSteps.isGamePageOpen();
     expect(isGamePageOpen).toBeTruthy();
     logger.info('Verified game page is open');
@@ -26,7 +27,7 @@ test('Help form', async ({ page }) => {
     await formSteps.clickHelpButton();
     logger.info('Clicked on "Help" button');
 
-    // Verify that the help response is visible
+    // Verify that the help response is displayed
     const helpResponseVisible = await formSteps.isHelpResponseVisible();
     expect(helpResponseVisible).toBeTruthy();
     logger.info('Help response is displayed');

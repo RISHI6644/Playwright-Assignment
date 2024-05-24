@@ -26,6 +26,10 @@ class FormSteps {
         return this.mainPage.isGamePageOpen();
     }
 
+    async getTimerText() {
+        return await this.mainPage.getTimerText();
+    }
+
     async generateRandomValidPassword(email) {
         const passwordLength = 10;
         const capitalLetterRegex = /[A-Z]/;

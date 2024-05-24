@@ -2,12 +2,12 @@ const BaseForm = require('../../framework/form/baseForm');
 
 class MainPage extends BaseForm {
     constructor(page) {
-        super(page, 'body'); 
+        super(page); 
         this.page = page;
         this.hereLink = page.getByRole('link', { name: 'HERE' });
-        this.cancelButton = page.getByRole('button', { name: 'Cancel' });
         this.helpButton = page.getByText('Help', { exact: true });
         this.helpResponse = page.getByText('Please wait, there are', { exact: false });
+        this.timer = page.locator('//div[@class="timer timer--white timer--center"]');
         this.emailField = page.getByPlaceholder('Your email');
         this.domainField = page.getByPlaceholder('Domain');
         this.domainDropdown = page.getByText('other').first();
@@ -36,6 +36,11 @@ class MainPage extends BaseForm {
 
     async isGamePageOpen() {
         return this.nextButton.isVisible();
+    }
+
+    async getTimerText() {
+        // Get the text content of the timer element
+        return await this.timer.textContent();
     }
 
     async clearEmailField() {

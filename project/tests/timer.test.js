@@ -7,6 +7,7 @@ test('Timer', async ({ page }) => {
     const formSteps = new FormSteps(page);
     logger.info('Starting Timer test');
 
+    // Navigate to the main page
     await formSteps.navigateToMainPage(testData.url);
     logger.info('Navigated to main page');
 
@@ -18,13 +19,13 @@ test('Timer', async ({ page }) => {
     await formSteps.clickHereLink();
     logger.info('Clicked on "Here" link');
 
-    // Verify that the game page is open by checking the visibility of the "Cancel" button
+    // Verify that the game page is open by checking the visibility of the "Next" button
     const isGamePageOpen = await formSteps.isGamePageOpen();
     expect(isGamePageOpen).toBeTruthy();
     logger.info('Verified game page is open');
 
     // Check if the timer starts from 00:00
-    const timerText = await page.textContent('.timer'); // Adjust the selector according to your HTML structure
-    expect(timerText).toContain('00:00');
-    logger.info('Timer starts from 00:00');
+    const timerText = await formSteps.getTimerText();
+    expect(timerText).toBe('00:00:00');
+    logger.info('Timer starts from 00:00:00');
 });
