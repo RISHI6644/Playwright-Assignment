@@ -1,0 +1,15 @@
+{
+  "name": "playwright-assignment",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {"test": "npx playwright test"},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "Playwright tests for userinyerface.com",
+  "devDependencies": {
+    "@playwright/test": "^1.44.0",
+    "winston": "^3.3.3",
+    "@types/node": "^20.12.12"
+  }
+}
