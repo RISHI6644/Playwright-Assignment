@@ -10,10 +10,9 @@ class GamePage extends BaseForm {
     secondCardForm = new SecondCardForm();
 
     timerLabel = new Label('//div[@class="timer timer--white timer--center"]', 'Timer Label');
-    termsAndConditionsLabel = new Label('//a[@class="login-form__terms-conditions"]', 'Game Page Label');
 
     constructor() {
-        super(this.termsAndConditionsLabel, 'GamePage');
+        super(new Label('//a[@class="login-form__terms-conditions"]', 'Game Page'));
     }
 }
 

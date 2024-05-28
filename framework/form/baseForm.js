@@ -6,9 +6,9 @@ class BaseForm {
         this.name = name;
     }
 
-    async isDisplayed(timeout) {
+    async isDisplayed(timeout = 5000) {
         logger.info(`Checking if form '${this.name}' is displayed`);
-        return await this.uniqueElement.isVisible(timeout);
+        return this.uniqueElement.isVisible(timeout);
     }
 }
 

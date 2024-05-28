@@ -10,11 +10,9 @@ class FirstCardForm extends BaseForm {
     dropdownButton = new Button('//div[@class="dropdown__field"]', 'Dropdown button');
     termsAndConditionsButton = new Button('//span[@class="checkbox__box"]', 'Terms & Conditions Button');
     nextButton = new Button('//a[@class="button--secondary"]', 'Next Button');
-    
-    #uniqueElement = new Label('//div[@class="first-card"]', 'First Card Form Label');
 
     constructor() {
-        super(this.#uniqueElement, 'FirstCardForm');
+        super(new Label('//div[@class="first-card"]', 'First Card Form Label'), 'First Card Form');
     }
 }
 
