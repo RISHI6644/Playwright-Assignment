@@ -1,24 +1,15 @@
+import logger from '../../logger.js';
+
 class BaseForm {
-    constructor(page, formSelector) {
-        this.page = page;
-        this.formSelector = formSelector;
+    constructor(uniqueElement, name) {
+        this.uniqueElement = uniqueElement;
+        this.name = name;
     }
 
-    async isVisible() {
-        return this.page.isVisible(this.formSelector);
-    }
-
-    async clickButton(buttonLocator) {
-        await this.page.click(buttonLocator);
-    }
-
-    async getText(textLocator) {
-        return this.page.textContent(textLocator);
-    }
-
-    async fill(fieldLocator, value) {
-        await fieldLocator.fill(value);
+    async isDisplayed(timeout) {
+        logger.info(`Checking if form '${this.name}' is displayed`);
+        return await this.uniqueElement.isVisible(timeout);
     }
 }
 
-module.exports = BaseForm;
+export default BaseForm;

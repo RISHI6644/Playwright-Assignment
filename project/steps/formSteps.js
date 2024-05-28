@@ -1,4 +1,4 @@
-const MainPage = require('../pages/mainPage');
+import MainPage from '../pages/MainPage';
 
 class FormSteps {
     constructor(page) {
@@ -95,4 +95,4 @@ class FormSteps {
     }
 }
 
-module.exports = FormSteps;
+export default FormSteps;

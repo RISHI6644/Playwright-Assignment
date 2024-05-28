@@ -1,5 +1,5 @@
 // @ts-check
-const { defineConfig, devices } = require('@playwright/test');
+import { defineConfig, devices } from '@playwright/test';
 
 /**
  * Read environment variables from file.
@@ -10,7 +10,7 @@ const { defineConfig, devices } = require('@playwright/test');
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
-module.exports = defineConfig({
+export default defineConfig({
   testDir: './project/tests',
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -32,7 +32,7 @@ module.exports = defineConfig({
     headless: false,
     viewport: { width: 1280, height: 720 },
     ignoreHTTPSErrors: true,
-    screenshot: 'only-on-failure', // Capture screenshots on failure
+   // screenshot: 'only-on-failure', // Capture screenshots on failure
     video: 'retry-with-video', // Capture video on retry
     trace: 'on-first-retry',
   },
