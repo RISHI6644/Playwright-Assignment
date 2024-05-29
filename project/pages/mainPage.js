@@ -1,4 +1,4 @@
-import BaseForm from '../../framework/form/BaseForm';
+import BaseForm from '../../framework/form/baseForm';
 import Label from '../../framework/elements/Label';
 import Button from '../../framework/elements/Button';
 

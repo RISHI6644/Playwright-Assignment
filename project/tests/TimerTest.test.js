@@ -1,31 +1,19 @@
 import { test, expect } from '@playwright/test';
-import FormSteps from '../steps/formSteps';
-import { url } from '../testData/testData.json';
-import { info } from '../../logger';
+import PageProvider from '../PageProvider';
+import BrowserSteps from '../steps/BrowserSteps';
+import MainPage from '../pages/MainPage';
+import GamePage from '../pages/GamePage';
+import testData from '../../project/testData/testData.json';
 
 test('Timer', async ({ page }) => {
-    const formSteps = new FormSteps(page);
-    info('Starting Timer test');
+    const mainPage = new MainPage();
+    const gamePage = new GamePage();
 
-    // Navigate to the main page
-    await formSteps.navigateToMainPage(url);
-    info('Navigated to main page');
+    PageProvider.setPage(page);
 
-    // Verify that the "Here" link is visible to confirm the main page is open
-    const isHereLinkVisible = await formSteps.mainPage.hereLink.isVisible();
-    expect(isHereLinkVisible).toBeTruthy();
-    info('Verified "Here" link is visible');
-
-    await formSteps.clickHereLink();
-    info('Clicked on "Here" link');
-
-    // Verify that the game page is open by checking the visibility of the "Next" button
-    const isGamePageOpen = await formSteps.isGamePageOpen();
-    expect(isGamePageOpen).toBeTruthy();
-    info('Verified game page is open');
-
-    // Check if the timer starts from 00:00
-    const timerText = await formSteps.getTimerText();
-    expect(timerText).toBe('00:00:00');
-    info('Timer starts from 00:00:00');
+    await BrowserSteps.navigateTo('https://userinyerface.com');
+    expect(await mainPage.isDisplayed(), "Main page is opened").toBeTruthy();
+    await mainPage.clickHereButton();
+    expect(await gamePage.isDisplayed(), "Game page is opened").toBeTruthy();
+    expect(await gamePage.getTimerValue(), "The Timer starts from zero").toBe(testData.expectedTimer);
 });

@@ -1,74 +1,55 @@
 import { test, expect } from '@playwright/test';
-import FormSteps from '../steps/formSteps';
-import { info } from '../../logger';
-import { url } from '../testData/testData.json'; // Load test data
+import PageProvider from '../PageProvider';
+import BrowserSteps from '../steps/BrowserSteps';
+import MainPage from '../pages/MainPage';
+import GamePage from '../pages/GamePage';
+import Dropdown from '../../framework/elements/Dropdown';
+import RandomStringUtils from '../utilities/RandomStringUtils';
 
-test('Valid password', async ({ page }) => {
-    const formSteps = new FormSteps(page);
-    info('Starting validPassword test');
+test.describe('Valid and Invalid Password Tests', () => {
+    const mainPage = new MainPage();
+    const gamePage = new GamePage();
+    const dropdown = new Dropdown();
 
-    // Navigate to the main page
-    await formSteps.navigateToMainPage(url);
-    info('Navigated to main page');
+    test.beforeEach(async ({ page }) => {
+        PageProvider.setPage(page);
+        await BrowserSteps.navigateTo('https://userinyerface.com');
+        expect(await mainPage.isDisplayed(), "Main page is opened").toBeTruthy();
+        await mainPage.clickHereButton();
+        expect(await gamePage.isDisplayed(), "Game page is opened").toBeTruthy();
+    });
 
-    // Check if the main page is open by verifying the 'HERE' link is available
-    const isHereLinkVisible = await formSteps.mainPage.hereLink.isVisible();
-    expect(isHereLinkVisible).toBeTruthy();
-    info('Verified HERE link is visible on the main page');
+    test('Valid password', async () => {
+        const email = RandomStringUtils.generateRandomEmail();
+        await gamePage.firstCardForm.fillEmailField(email);
 
-    // Click on the 'HERE' link
-    await formSteps.clickHereLink();
-    info('Clicked on the HERE link');
+        const password = RandomStringUtils.generateRandomValidPassword();
+        await gamePage.firstCardForm.fillPasswordField(password);
 
-    // Verify that the game page is open by checking the next button is visible
-    const isGamePageOpen = await formSteps.mainPage.nextButton.isVisible();
-    expect(isGamePageOpen).toBeTruthy();
-    info('Verified game page is open');
+        const domain = Dropdown.generateRandomDomain();
+        await gamePage.firstCardForm.fillDomainField(domain);
 
-    // Click on the email field and clear it
-    await formSteps.mainPage.emailField.click();
-    await formSteps.mainPage.clearEmailField();
-    info('Cleared email field');
+        await gamePage.firstCardForm.clickDomainDropdown();
+        await gamePage.firstCardForm.selectRandomOption();
+        await gamePage.firstCardForm.clickTermsAndConditionsCheckbox();
+        await gamePage.firstCardForm.clickNextButton();
+        expect(await gamePage.secondCardForm.isSecondCardVisible(), "The Second card is open").toBeTruthy();
+    });
 
-    // Fill email field with a randomly generated email
-    const randomEmail = await formSteps.generateRandomEmail();
-    await formSteps.mainPage.emailField.fill(randomEmail);
-    info(`Filled email field with: ${randomEmail}`);
+    test('Invalid password', async () => {
+        const email = RandomStringUtils.generateRandomEmail();
+        await gamePage.firstCardForm.fillEmailField(email);
 
-    // Click on the domain field and clear it
-    await formSteps.mainPage.domainField.click();
-    await formSteps.mainPage.clearDomainField();
-    info('Cleared domain field');
+        const password = RandomStringUtils.generateRandomInvalidPassword();
+        await gamePage.firstCardForm.fillPasswordField(password);
 
-    // Fill domain field with a randomly generated domain
-    const randomDomain = await formSteps.generateRandomDomain();
-    await formSteps.mainPage.domainField.fill(randomDomain);
-    info(`Filled domain field with: ${randomDomain}`);
+        const domain = Dropdown.generateRandomDomain();
+        await gamePage.firstCardForm.fillDomainField(domain);
 
-    // Interact with the dropdown list
-    await formSteps.interactWithDropdownList();
-    info('Interacted with dropdown list and selected a random domain');
-
-    // Click on the password field and clear it
-    await formSteps.mainPage.passwordField.click();
-    await formSteps.mainPage.clearPasswordField();
-    info('Cleared password field');
-
-    // Generate and fill password field with a randomly generated valid password
-    const randomValidPassword = await formSteps.generateRandomValidPassword(randomEmail);
-    await formSteps.mainPage.passwordField.fill(randomValidPassword);
-    info(`Filled password field with: ${randomValidPassword}`);
-
-    // Click on the terms & conditions checkbox
-    await formSteps.mainPage.clickTermsAndConditionsCheckbox();
-    info('Accepted Terms & Conditions');
-
-    // Click the next button
-    await formSteps.mainPage.clickNextButton();
-    info('Clicked the next button');
-
-    // Verify that the next card is open by checking the next card button is visible
-    const isNextCardVisible = await formSteps.mainPage.isNextCardButtonVisible();
-    expect(isNextCardVisible).toBeTruthy();
-    info('Next card is open');
-});
+        await gamePage.firstCardForm.clickDomainDropdown();
+        await gamePage.firstCardForm.selectRandomOption();
+        await gamePage.firstCardForm.clickTermsAndConditionsCheckbox();
+        await gamePage.firstCardForm.clickNextButton();
+        expect(await gamePage.secondCardForm.isSecondCardVisible(), "The Second card is not open").toBeFalsy();
+    });
+ });
